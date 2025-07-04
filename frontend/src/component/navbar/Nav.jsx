@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navb.css';
 import { assets } from '../../assets/assets';
@@ -9,18 +9,27 @@ const Nav = ({ setShowLogin }) => {
   const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
   const navigate = useNavigate();
 
+  const navCheckRef = useRef(); 
+
+  const closeMenu = () => {
+    if (navCheckRef.current) {
+      navCheckRef.current.checked = false;
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
     navigate("/");
+    closeMenu(); // ✅ Close after logout
   };
 
   return (
     <div className="navbar">
-      <input type="checkbox" id="nav-check" />
-      
+      <input type="checkbox" id="nav-check" ref={navCheckRef} />
+
       <div className="nav-header">
-        <Link to="/" className="nav-logo">
+        <Link to="/" className="nav-logo" onClick={closeMenu}>
           <img src={assets.logo} alt="Logo" className="logo" />
         </Link>
         <div className="nav-btn">
@@ -33,34 +42,33 @@ const Nav = ({ setShowLogin }) => {
       </div>
 
       <ul className="navbar-menu">
-        <li onClick={() => setMenu("home")} className={menu === "home" ? "active" : ""}>
+        <li onClick={() => { setMenu("home"); closeMenu(); }}>
           <Link to="/">Home</Link>
         </li>
-        <li onClick={() => setMenu("order")} className={menu === "order" ? "active" : ""}>
+        <li onClick={() => { setMenu("order"); closeMenu(); }}>
           <Link to="/order">Order</Link>
         </li>
-        <li onClick={() => setMenu("mobile-app")} className={menu === "mobile-app" ? "active" : ""}>
+        <li onClick={() => { setMenu("mobile-app"); closeMenu(); }}>
           <Link to="/mobile">Mobile</Link>
         </li>
-        <li onClick={() => setMenu("contact-us")} className={menu === "contact-us" ? "active" : ""}>
+        <li onClick={() => { setMenu("contact-us"); closeMenu(); }}>
           <Link to="/contact">Contact</Link>
         </li>
       </ul>
 
       <div className="navbar-right">
-        <img />
         <div className="navbar-search">
-          <Link to="/cart"><img src={assets.basket_icon} alt="Basket" /></Link>
+          <Link to="/cart" onClick={closeMenu}><img src={assets.basket_icon} alt="Basket" /></Link>
           <div className={getTotalCartAmount() ? "dot" : ""}></div>
         </div>
 
         {!token ? (
-          <button onClick={() => setShowLogin(true)}>Sign-in</button>
+          <button onClick={() => { setShowLogin(true); closeMenu(); }}>Sign-in</button>
         ) : (
           <div className="navbar-profile">
             <img src={assets.profile_icon} alt="Profile" />
             <ul className="nav-profile-dropdown">
-              <li onClick={() => navigate('/myorders')}>
+              <li onClick={() => { navigate('/myorders'); closeMenu(); }}>
                 <img src={assets.bag_icon} alt="Orders" />
                 <p>Orders</p>
               </li>
