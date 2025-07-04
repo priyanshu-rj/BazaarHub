@@ -167,8 +167,12 @@ body {
   width: 160px;
 }
 
-/* ✅ Responsive for Mobile */
+
 @media (max-width: 768px) {
+  .mobile-page-wrapper {
+    margin-top: 75px; 
+    transition: margin-top 0.3s ease;
+  }
   .nav-btn {
     display: block;
   }
