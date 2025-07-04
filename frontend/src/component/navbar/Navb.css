@@ -9,13 +9,17 @@ body {
 
 .navbar {
   background-color: #fff;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px;
   z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 #nav-check {
@@ -31,7 +35,7 @@ body {
 }
 
 .nav-logo img {
-  width: 180px;
+  width: 160px;
 }
 
 .nav-btn {
@@ -101,6 +105,7 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .navbar-search img {
@@ -114,8 +119,9 @@ body {
   height: 10px;
   background-color: tomato;
   border-radius: 50%;
-  top: -4px;
-  right: -4px;
+  top: 0px;
+  right: 0px;
+  transform: translate(50%, -50%);
 }
 
 /* Profile dropdown */
@@ -167,13 +173,23 @@ body {
     display: block;
   }
 
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px 20px;
+  }
+
   .navbar-menu,
   .navbar-right {
     display: none;
     flex-direction: column;
     width: 100%;
-    background-color: #f9f9f9;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.7);
+    border-top: 1px solid #eee;
     padding: 10px 0;
+    animation: fadeIn 0.3s ease-in-out forwards;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
   #nav-check:checked ~ .navbar-menu,
@@ -183,8 +199,14 @@ body {
 
   .navbar-menu li,
   .navbar-right > * {
-    padding: 10px 20px;
+    padding: 12px 20px;
     width: 100%;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .navbar-menu a {
+    font-size: 16px;
+    color: #222;
   }
 
   .navbar button {
@@ -193,8 +215,6 @@ body {
   }
 
   .navbar-search {
-    position: relative;
-    margin-left: 0;
     justify-content: flex-start;
   }
 
@@ -206,6 +226,7 @@ body {
   .navbar-search .dot {
     top: -4px;
     right: -4px;
+    transform: translate(0, 0);
   }
 
   .navbar-profile:hover .nav-profile-dropdown {
@@ -226,6 +247,17 @@ body {
   }
 
   .nav-logo img {
-    width: 150px;
+    width: 140px;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
