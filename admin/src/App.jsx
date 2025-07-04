@@ -10,7 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = () => {
-  const url = "https://fusion-hub-backend.onrender.com";
+  const url = "https://bazaarhub-backend.onrender.com";
+  
   return (
     <div>
       <ToastContainer/>

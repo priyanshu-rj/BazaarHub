@@ -1,65 +1,67 @@
-import React, { useEffect, useState } from 'react'
-import './list.css'  
-import axios from 'axios'
-import {toast} from 'react-toastify'
-const List = ({url}) => {
+import React, { useEffect, useState } from 'react';
+import './list.css';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-  const [list,setList] = useState([]);
+const List = ({ url }) => {
+  const [list, setList] = useState([]);
+
   const fetchList = async () => {
-    const response = await axios.get(`${url}/api/food/list`)
-    console.log(response.data);
-    if(response.data.success){
-      setList(response.data.data)
+    try {
+      const response = await axios.get(`${url}/api/food/list`);
+      if (response.data.success) {
+        setList(response.data.data);
+      } else {
+        toast.error("Error fetching list");
+      }
+    } catch (err) {
+      toast.error("Server error");
     }
-    else{
-      toast.error("Error")
-    }
-  }
- 
+  };
 
-  const removeFood = async(foodId) => {
-      const response = await axios.post(`${url}/api/food/remove`,{id:foodId})
+  const removeFood = async (foodId) => {
+    try {
+      const response = await axios.post(`${url}/api/food/remove`, { id: foodId });
       await fetchList();
-      if(response.data.success){
-        toast.success("Item Remove Sucessfully");
+      if (response.data.success) {
+        toast.success("Item removed successfully");
+      } else {
+        toast.error("Failed to remove item");
       }
-      else{
-        toast.error("Error");
-      }
-  }
+    } catch (err) {
+      toast.error("Server error");
+    }
+  };
 
-
-   useEffect(()=>{
+  useEffect(() => {
     fetchList();
-   },[])
+  }, []);
+
   return (
     <div className='list add flex-col'>
       <p>All Item List</p>
       <div className="list-table">
         <div className="list-table-format title">
-           <b>Image</b>
-           <b>Name</b>
-           <b>Category</b>
-           <b>Price</b>
-           <b>Action</b>
+          <b>Image</b>
+          <b>Name</b>
+          <b>Category</b>
+          <b>Price</b>
+          <b>Action</b>
         </div>
-        {
-          list.map((item,index)=>{
-            return(
-              <div key={index} className='list-table-format'>
-                  <img src={`${url}/images/`+item.image} alt="" />
-                  <p>{item.name}</p>
-                  <p>{item.category}</p>
-                  <p>{item.price}</p>
-                  <p onClick={()=>removeFood(item._id)} className='cursor' >x</p>
-              </div>
-            )
-          })
-        }
+
+        {list.map((item, index) => (
+          <div key={index} className='list-table-format'>
+            {/* ✅ Fix: Use image directly */}
+            <img src={item.image} alt={item.name} />
+            <p>{item.name}</p>
+            <p>{item.category}</p>
+            <p>₹{item.price}</p>
+            <p onClick={() => removeFood(item._id)} className='cursor'>x</p>
+          </div>
+        ))}
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default List
+export default List;

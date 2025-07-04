@@ -9,7 +9,7 @@ const Scontext = (props) => {
 
     const [cartItems,setCartItems] = useState({});
     
-    const url = "https://fusion-hub-backend.onrender.com";
+    const url = "https://bazaarhub-backend.onrender.com";
     const [token,setToken] = useState("");
     
      const [food_list,setFoodList] = useState([])

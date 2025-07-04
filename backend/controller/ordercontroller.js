@@ -3,7 +3,7 @@ import userModel from "../models/userModel.js";
 
 // Placing user order front
 const placeOrder = async (req, res) => {
-  const frontend_url = "https://fusion-hub-frontend.onrender.com/";
+  const frontend_url = "https://bazaarhub.onrender.com";
 
   try {
     const newOrder = new orderModel({
