@@ -21,7 +21,7 @@ const Nav = ({ setShowLogin }) => {
       
       <div className="nav-header">
         <Link to="/" className="nav-logo">
-          {/* <img src={assets.logo} alt="Logo" className="logo" /> */}
+          <img src={assets.logo} alt="Logo" className="logo" />
         </Link>
         <div className="nav-btn">
           <label htmlFor="nav-check">

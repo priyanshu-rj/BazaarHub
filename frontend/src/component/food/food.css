@@ -1,15 +1,25 @@
-.food-display{
-    margin-top: 30px;
+.food-display {
+  margin-top: 30px;
 }
-.food-display h2{
-    font-size: max(2vw,24px);
-    font-weight: 600;
+
+.food-display h2 {
+  font-size: max(2vw, 24px);
+  font-weight: 600;
 }
-.food-display-list{
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
-    margin-top: 30px;
-    gap: 50;
-    row-gap: 50px;
-    column-gap: 10px;
+
+/* ✅ Grid layout for all food items */
+.food-display-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  margin-top: 30px;
+  gap: 20px;
+  padding: 10px;
+}
+
+
+@media (max-width: 500px) {
+  .food-display-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
 }
