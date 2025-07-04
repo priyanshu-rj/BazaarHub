@@ -21,32 +21,28 @@ const Cart = () => {
         <br />
         <hr />
 
-        {food_list.length > 0 &&
-          food_list.map((item) => {
-            if (cartItems[item._id] > 0) {
-              return (
-                <div key={item._id}>
-                  <div className='cart-items-title cart-items-item'>
-                    <img
-                      src={
-                        item.image.startsWith('http')
-                          ? item.image
-                          : `${url}/images/${item.image}`
-                      }
-                      alt={item.name}
-                    />
-                    <p>{item.name}</p>
-                    <p>Rs. {item.price.toFixed(2)}</p>
-                    <p>{cartItems[item._id]}</p>
-                    <p>Rs. {(item.price * cartItems[item._id]).toFixed(2)}</p>
-                    <p onClick={() => removeFromCart(item._id)} className='cross'>x</p>
-                  </div>
-                  <hr />
+        {food_list.map((item) => {
+          const quantity = cartItems[item._id];
+          if (quantity > 0 && item.price !== undefined) {
+            return (
+              <div key={item._id}>
+                <div className='cart-items-title cart-items-item'>
+                  <img
+                    src={item.image.startsWith('http') ? item.image : `${url}/images/${item.image}`}
+                    alt={item.name}
+                  />
+                  <p>{item.name}</p>
+                  <p>Rs. {item.price}</p>
+                  <p>{quantity}</p>
+                  <p>Rs. {item.price * quantity}</p>
+                  <p onClick={() => removeFromCart(item._id)} className='cross'>x</p>
                 </div>
-              );
-            }
-            return null;
-          })}
+                <hr />
+              </div>
+            );
+          }
+          return null;
+        })}
       </div>
 
       <div className="cart-bottom">
@@ -55,18 +51,18 @@ const Cart = () => {
           <div>
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>Rs. {getTotalCartAmount().toFixed(2)}</p>
+              <p>Rs. {getTotalCartAmount()}</p>
             </div>
             <div className="cart-total-details">
               <p>Delivery Fee</p>
-              <p>Rs. {getTotalCartAmount() === 0 ? '0.00' : '2.00'}</p>
+              <p>Rs. {getTotalCartAmount() === 0 ? 0 : 2}</p>
             </div>
             <div className="cart-total-details">
               <p>Total</p>
-              <p>Rs. {getTotalCartAmount() === 0 ? '0.00' : (getTotalCartAmount() + 2).toFixed(2)}</p>
+              <p>Rs. {getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}</p>
             </div>
           </div>
-          <button onClick={() => navigate('/order')}>PROCEED TO CHECK OUT</button>
+          <button onClick={() => navigate('/order')}>PROCEED TO CHECKOUT</button>
         </div>
       </div>
     </div>
