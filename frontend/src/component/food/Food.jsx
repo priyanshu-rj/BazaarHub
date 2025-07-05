@@ -1,24 +1,52 @@
-import React, { useContext } from 'react'
-import './food.css'
-import { StoreContext } from '../../context/Scontext'
-import Fooditem from '../fooditem/Fooditem'
-const Food = (category) => {
+import React, { useContext, useState } from 'react';
+import './food.css';
+import { StoreContext } from '../../context/Scontext';
+import Fooditem from '../fooditem/Fooditem';
 
-    const {food_list} = useContext(StoreContext) 
+const Food = () => {
+  const { food_list } = useContext(StoreContext);
+  const [searchTerm, setSearchTerm] = useState('');
 
+  // Filter items whose name starts with the search term
+  const filteredFoodList = food_list.filter(item =>
+    item.name.toLowerCase().startsWith(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className='food-display' id='food-display' >
-       <h2>Top Prdoduct near you</h2>
-       <div className="food-display-list">
-        {
-            food_list.map((item,index)=>{
-               return <Fooditem key={index} id={item._id} name={item.name} descrption={item.descrption} price={item.price} image={item.image}/>
-            })
-        }
-       </div>
-    </div>
-  )
-}
+    <div className='food-display' id='food-display'>
+      <h4>Fast Delivery Available within 2 km radius of Partapganj Goal Chawk</h4>
 
-export default Food
+    
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search food..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="food-search-input"
+        />
+      </div>
+
+      <div className="food-display-list">
+        {
+          filteredFoodList.length === 0 ? (
+            <p style={{ color: "gray" }}>No matching food items found.</p>
+          ) : (
+            filteredFoodList.map((item, index) => (
+              <Fooditem
+                key={index}
+                id={item._id}
+                name={item.name}
+                descrption={item.descrption}
+                price={item.price}
+                image={item.image}
+              />
+            ))
+          )
+        }
+      </div>
+    </div>
+  );
+};
+
+export default Food;
