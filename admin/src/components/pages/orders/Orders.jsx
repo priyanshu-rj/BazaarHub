@@ -8,25 +8,44 @@ const Orders = ({ url }) => {
   const [orders, setOrders] = useState([]);
   const previousOrderIds = useRef([]);
 
+
+  useEffect(() => {
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          console.log("Notification permission granted.");
+        }
+      });
+    }
+  }, []);
+
+  // Function to send browser notification
+  const sendBrowserNotification = (message) => {
+    if (Notification.permission === 'granted') {
+      new Notification("New Order Alert", {
+        body: message,
+        icon: assets.parcel_icon, // optional icon
+      });
+    }
+  };
+
+  // Fetch all orders and detect new ones
   const fetchAllOrders = async () => {
     try {
       const response = await axios.get(url + "/api/order/list");
 
       if (response.data.success) {
         const newOrders = response.data.data;
-
-        // Reverse orders to show recent first
-        const reversedOrders = [...newOrders].reverse();
-
-        // Detect new orders
+        const reversedOrders = [...newOrders].reverse(); // recent first
         const currentIds = reversedOrders.map((order) => order._id);
         const newIds = currentIds.filter((id) => !previousOrderIds.current.includes(id));
 
         if (previousOrderIds.current.length > 0 && newIds.length > 0) {
-          toast.info(`${newIds.length} new order${newIds.length > 1 ? 's' : ''} received!`);
+          const message = `${newIds.length} new order${newIds.length > 1 ? 's' : ''} received!`;
+          toast.info(message);
+          sendBrowserNotification(message);
         }
 
-        // Update state and previous IDs
         previousOrderIds.current = currentIds;
         setOrders(reversedOrders);
       } else {
@@ -37,18 +56,21 @@ const Orders = ({ url }) => {
     }
   };
 
+  // Fetch orders on load and then every 10 seconds
   useEffect(() => {
     fetchAllOrders();
-    const interval = setInterval(fetchAllOrders, 10000); // refresh every 10 sec
-    return () => clearInterval(interval); // cleanup on unmount
+    const interval = setInterval(fetchAllOrders, 10000);
+    return () => clearInterval(interval);
   }, []);
 
+  // Handle order status change
   const statusHandler = async (event, orderId) => {
     try {
       const response = await axios.post(url + "/api/order/status", {
         orderId,
         status: event.target.value,
       });
+
       if (response.data.success) {
         await fetchAllOrders();
       } else {
@@ -70,9 +92,9 @@ const Orders = ({ url }) => {
               <div>
                 <p className='order-item-food'>
                   {
-                    order.items.map((item, index) => {
-                      return item.name + " x " + item.quantity + (index !== order.items.length - 1 ? ", " : "");
-                    })
+                    order.items.map((item, idx) =>
+                      item.name + " x " + item.quantity + (idx !== order.items.length - 1 ? ", " : "")
+                    )
                   }
                 </p>
                 <p className="order-item-name">
