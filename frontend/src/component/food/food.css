@@ -7,7 +7,7 @@
   font-weight: 600;
 }
 
-/* ✅ Grid layout for all food items */
+
 .food-display-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -15,6 +15,29 @@
   gap: 20px;
   padding: 10px;
 }
+
+.search-container {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.food-search-input {
+  width: 80%;
+  max-width: 400px;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.food-search-input:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 6px rgba(40, 167, 69, 0.3);
+}
+
 
 
 @media (max-width: 500px) {
