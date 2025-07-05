@@ -20,7 +20,7 @@ const Food = () => {
       <div className="search-container">
         <input
           type="text"
-          placeholder="Search food..."
+          placeholder="Search Item..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="food-search-input"
@@ -30,7 +30,7 @@ const Food = () => {
       <div className="food-display-list">
         {
           filteredFoodList.length === 0 ? (
-            <p style={{ color: "gray" }}>No matching food items found.</p>
+            <p style={{ color: "gray" }}>No matching items found.</p>
           ) : (
             filteredFoodList.map((item, index) => (
               <Fooditem
