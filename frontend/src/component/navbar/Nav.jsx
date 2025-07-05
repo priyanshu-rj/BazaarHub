@@ -21,7 +21,7 @@ const Nav = ({ setShowLogin }) => {
     localStorage.removeItem("token");
     setToken("");
     navigate("/");
-    closeMenu(); // ✅ Close after logout
+    closeMenu(); 
   };
 
   return (
